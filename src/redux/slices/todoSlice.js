@@ -4,17 +4,23 @@ import { createSlice } from "@reduxjs/toolkit";
 export const todoSlice = createSlice({
   name: "todo",
   initialState: {
-    todoList: [],
+    todoList: JSON.parse(localStorage.getItem("todo")) ?? [],
   },
   reducers: {
     addTodo: (state, action) => {
-      // TODO: 투두 추가 상태변경 해보세요.
+      const { title, content } = action.payload;
+      const newTodo = { id: Date.now(), title, content, isDone: false };
+      state.todoList.push(newTodo);
+      localStorage.setItem("todo", JSON.stringify(state.todoList));
     },
     deleteTodo: (state, action) => {
       // TODO: 투두 삭제 상태변경 해보세요.
+      return state.filter((todo) => todo.id !== action.payload);
     },
     toggleTodo: (state, action) => {
       // TODO: 투두의 isDone 속성값(boolean)을 토글링하도록 상태변경 해보세요.
+      const isDoneToggle = state.find((todo) => todo.id === action.payload);
+      isDoneToggle = !isDoneToggle;
     },
   },
 });

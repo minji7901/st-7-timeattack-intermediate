@@ -1,4 +1,7 @@
-export default function TodoForm({ setTodos }) {
+import { useDispatch } from "react-redux";
+import { addTodo } from "../redux/slices/todoSlice";
+
+export default function TodoForm() {
   const onSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -6,10 +9,8 @@ export default function TodoForm({ setTodos }) {
     const content = formData.get("content");
 
     // TODO: 리덕스의 reducer 로 상태 변경할 수 있게 해주세요.
-    setTodos((prevTodos) => [
-      ...prevTodos,
-      { id: Date.now(), title, content, isDone: false },
-    ]);
+    const dispatch = useDispatch();
+    dispatch(addTodo(title, content));
 
     e.target.reset();
   };
